@@ -6,13 +6,14 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
 import at.ac.fhcampuswien.fhmdb.FhmdbApplication;
 import org.json.*;
 
-public class Movie {
+public class Movie implements Comparable<Movie>{
     private String title;
     private String description;
     private List<Genre> genres;
@@ -84,4 +85,10 @@ public class Movie {
         return jsonObject.getJSONArray("movies");
     }
 
+    @Override
+    public int compareTo(final Movie movie)
+    {
+        return this.getTitle().compareTo(movie.getTitle());
+    }
 }
+
