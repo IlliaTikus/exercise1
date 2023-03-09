@@ -85,6 +85,10 @@ public class Movie implements Comparable<Movie>{
         return jsonObject.getJSONArray("movies");
     }
 
+    public boolean containsSubstring(String substring){
+        return String.format("%s %s", title, description).toLowerCase().contains(substring.toLowerCase());
+    }
+
     @Override
     public int compareTo(final Movie movie)
     {

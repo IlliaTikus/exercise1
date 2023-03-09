@@ -13,10 +13,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class HomeController implements Initializable {
     @FXML
@@ -67,10 +64,20 @@ public class HomeController implements Initializable {
         });
 
         searchBtn.setOnAction(actionEvent -> {
-            //TODO filter method
-            observableMovies.clear();
-            Genre genre = Genre.valueOf(genreComboBox.getValue().toString().toUpperCase());
-            filterByGenre(allMovies, genre);
+            String query = searchField.getText();
+            List<Movie> filtered = null;
+            if(!query.isBlank()){
+                filtered = filterByQuery(allMovies, query);
+            }
+            if(genreComboBox.getValue() != null) {
+                Genre genre = Genre.valueOf(genreComboBox.getValue().toString().toUpperCase());
+                observableMovies.clear();
+                filterByGenre((filtered != null ? filtered : allMovies), genre);
+            }else if(filtered != null){
+                observableMovies.clear();
+                observableMovies.addAll(filtered);
+            }
+            movieListView.refresh();
         });
     }
 
@@ -81,4 +88,13 @@ public class HomeController implements Initializable {
             }
         }
     }
+
+    public List<Movie> filterByQuery(List<Movie> unfiltered, String query){
+        List<Movie> filtered = new LinkedList<>();
+        for(Movie m : unfiltered){
+            if(m.containsSubstring(query)) filtered.add(m);
+        }
+        return filtered;
+    }
+
 }

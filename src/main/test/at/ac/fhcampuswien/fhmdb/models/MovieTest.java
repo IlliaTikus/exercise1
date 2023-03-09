@@ -1,7 +1,10 @@
 package at.ac.fhcampuswien.fhmdb.models;
 
 import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -18,6 +21,39 @@ class MovieTest {
     void initialized_movie_list_is_empty_returns_false(){
         List<Movie> movieList = Movie.initializeMovies();
         assertFalse(movieList.isEmpty());
+    }
+
+    @Test
+    void movie_contains_substring_returns_true_if_exists_in_title(){
+        List<Genre> genres = new LinkedList<>();
+        genres.add(Genre.ADVENTURE);
+        Movie movie = new Movie("Test Movie",
+                "This is a great film about great people doing great things", genres);
+        String substring = "test";
+        boolean actual = movie.containsSubstring(substring);
+        assertTrue(actual);
+    }
+
+    @Test
+    void movie_contains_substring_returns_true_if_exists_in_description(){
+        List<Genre> genres = new LinkedList<>();
+        genres.add(Genre.ADVENTURE);
+        Movie movie = new Movie("Test Movie",
+                "This is a great film about great people doing great things", genres);
+        String substring = "great";
+        boolean actual = movie.containsSubstring(substring);
+        assertTrue(actual);
+    }
+
+    @Test
+    void movie_contains_substring_returns_false_if_doesnt_exist(){
+        List<Genre> genres = new LinkedList<>();
+        genres.add(Genre.ADVENTURE);
+        Movie movie = new Movie("Test Movie",
+                "This is a great film about great people doing great things", genres);
+        String substring = "adventure";
+        boolean actual = movie.containsSubstring(substring);
+        assertFalse(actual);
     }
 
     @Test
