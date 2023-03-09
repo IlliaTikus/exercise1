@@ -36,7 +36,7 @@ public class HomeController implements Initializable {
 
     public List<Movie> allMovies = Movie.initializeMovies();
 
-    private final ObservableList<Movie> observableMovies = FXCollections.observableArrayList();   // automatically updates corresponding UI elements when underlying data changes
+    public final ObservableList<Movie> observableMovies = FXCollections.observableArrayList();   // automatically updates corresponding UI elements when underlying data changes
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -46,22 +46,20 @@ public class HomeController implements Initializable {
         movieListView.setItems(observableMovies);   // set data of observable list to list view
         movieListView.setCellFactory(movieListView -> new MovieCell()); // use custom cell factory to display data
 
-        // TODO add genre filter items with genreComboBox.getItems().addAll(...)
+        //add genre filter items with genreComboBox.getItems().addAll(...)
         genreComboBox.getItems().addAll(Genre.values());
         genreComboBox.setPromptText("Filter by Genre");
 
-        // TODO add event handlers to buttons and call the regarding methods
+        //add event handlers to buttons and call the regarding methods
         // either set event handlers in the fxml file (onAction) or add them here
 
         // Sort button example:
         sortBtn.setOnAction(actionEvent -> {
             if(sortBtn.getText().equals("Sort (asc)")) {
-                // TODO sort observableMovies ascending
                 sortBtn.setText("Sort (desc)");
                 Collections.sort(observableMovies);
 
             } else {
-                // TODO sort observableMovies descending
                 sortBtn.setText("Sort (asc)");
                 Collections.sort(observableMovies);
                 Collections.reverse(observableMovies);
@@ -71,13 +69,16 @@ public class HomeController implements Initializable {
         searchBtn.setOnAction(actionEvent -> {
             //TODO filter method
             observableMovies.clear();
-
-            for(Movie movie : allMovies) {
-                if(movie.getGenres().contains(Genre.valueOf(genreComboBox.getValue().toString().toUpperCase()))) {
-                    observableMovies.add(movie);
-                }
-            }
+            Genre genre = Genre.valueOf(genreComboBox.getValue().toString().toUpperCase());
+            filterByGenre(allMovies, genre);
         });
+    }
 
+    public void filterByGenre(List<Movie> allMovies, Genre genre) {
+        for(Movie movie : allMovies) {
+            if(movie.getGenres().contains(genre)) {
+                observableMovies.add(movie);
+            }
+        }
     }
 }

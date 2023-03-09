@@ -1,7 +1,6 @@
 package at.ac.fhcampuswien.fhmdb.models;
 
 import org.junit.jupiter.api.Test;
-
 import java.util.Collections;
 import java.util.List;
 
