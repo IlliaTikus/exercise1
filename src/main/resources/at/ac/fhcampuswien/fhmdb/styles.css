@@ -3,6 +3,10 @@
     -fx-background-color: #f5c518;
 }
 
+.background-white {
+    -fx-background-color: #ffffff;
+}
+
 .background-black {
     -fx-background-color: #000000;
 }

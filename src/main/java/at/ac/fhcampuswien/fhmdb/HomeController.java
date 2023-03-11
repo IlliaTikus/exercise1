@@ -10,6 +10,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Cursor;
 import javafx.scene.control.TextField;
 
 import java.net.URL;
@@ -31,12 +32,19 @@ public class HomeController implements Initializable {
     @FXML
     public JFXButton sortBtn;
 
+    @FXML
+    public JFXButton resetBtn;
+
     public List<Movie> allMovies = Movie.initializeMovies();
 
     public final ObservableList<Movie> observableMovies = FXCollections.observableArrayList();   // automatically updates corresponding UI elements when underlying data changes
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        resetBtn.setCursor(Cursor.HAND);
+        sortBtn.setCursor(Cursor.HAND);
+        searchBtn.setCursor(Cursor.HAND);
+
         observableMovies.addAll(allMovies);         // add dummy data to observable list
 
         // initialize UI stuff
@@ -79,6 +87,12 @@ public class HomeController implements Initializable {
             }
             movieListView.refresh();
         });
+
+        resetBtn.setOnAction((actionEvent -> {
+            observableMovies.clear();
+            observableMovies.addAll(allMovies);
+            movieListView.refresh();
+        }));
     }
 
     public void filterByGenre(List<Movie> allMovies, Genre genre) {
