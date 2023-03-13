@@ -92,6 +92,8 @@ public class HomeController implements Initializable {
             observableMovies.clear();
             observableMovies.addAll(allMovies);
             movieListView.refresh();
+            genreComboBox.valueProperty().set(null);
+            searchField.clear();
         }));
     }
 
