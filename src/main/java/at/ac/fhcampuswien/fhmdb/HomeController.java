@@ -89,9 +89,7 @@ public class HomeController implements Initializable {
         });
 
         resetBtn.setOnAction((actionEvent -> {
-            observableMovies.clear();
-            observableMovies.addAll(allMovies);
-            movieListView.refresh();
+            resetView(allMovies);
             genreComboBox.valueProperty().set(null);
             searchField.clear();
         }));
@@ -103,6 +101,11 @@ public class HomeController implements Initializable {
                 observableMovies.add(movie);
             }
         }
+    }
+
+    public void resetView(List <Movie> allMovies) {
+        observableMovies.clear();
+        observableMovies.addAll(allMovies);
     }
 
     public List<Movie> filterByQuery(List<Movie> unfiltered, String query){
