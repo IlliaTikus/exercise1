@@ -12,19 +12,19 @@ import static org.junit.jupiter.api.Assertions.*;
 class MovieTest {
 
     @Test
-    void initialized_movie_list_is_not_null(){
+    public void initialized_movie_list_is_not_null(){
         List<Movie> movieList = Movie.initializeMovies();
         assertNotNull(movieList);
     }
 
     @Test
-    void initialized_movie_list_is_empty_returns_false(){
+    public void initialized_movie_list_is_empty_returns_false(){
         List<Movie> movieList = Movie.initializeMovies();
         assertFalse(movieList.isEmpty());
     }
 
     @Test
-    void movie_contains_substring_returns_true_if_exists_in_title(){
+    public void movie_contains_substring_returns_true_if_exists_in_title(){
         List<Genre> genres = new LinkedList<>();
         genres.add(Genre.ADVENTURE);
         Movie movie = new Movie("Test Movie",
@@ -35,7 +35,7 @@ class MovieTest {
     }
 
     @Test
-    void movie_contains_substring_returns_true_if_exists_in_description(){
+    public void movie_contains_substring_returns_true_if_exists_in_description(){
         List<Genre> genres = new LinkedList<>();
         genres.add(Genre.ADVENTURE);
         Movie movie = new Movie("Test Movie",
@@ -46,7 +46,7 @@ class MovieTest {
     }
 
     @Test
-    void movie_contains_substring_returns_false_if_doesnt_exist(){
+    public void movie_contains_substring_returns_false_if_doesnt_exist(){
         List<Genre> genres = new LinkedList<>();
         genres.add(Genre.ADVENTURE);
         Movie movie = new Movie("Test Movie",
@@ -57,7 +57,7 @@ class MovieTest {
     }
 
     @Test
-    void sort_movie_list_ascending_returns_true(){
+    public void sort_movie_list_ascending_returns_true(){
 //        ARRANGE
         List<Movie> movieList = Movie.initializeMovies();
 
@@ -73,7 +73,7 @@ class MovieTest {
     }
 
     @Test
-    void sort_movie_list_descending_returns_true(){
+    public void sort_movie_list_descending_returns_true(){
 //        ARRANGE
         List<Movie> movieList = Movie.initializeMovies();
 

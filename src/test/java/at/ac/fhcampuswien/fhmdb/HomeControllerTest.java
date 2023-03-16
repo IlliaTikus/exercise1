@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class HomeControllerTest {
 
     @Test
-    void filter_by_genre_returns_true (){
+    public void filter_by_genre_returns_true (){
         //given
         List<Movie> allMovies = new ArrayList<>();
         allMovies.add(new Movie("The Shawshank Redemption", "1994", Arrays.asList(Genre.DRAMA)));
@@ -33,7 +33,7 @@ class HomeControllerTest {
     }
 
     @Test
-    void filter_by_query_returns_empty_list_when_not_found_in_any_movie(){
+    public void filter_by_query_returns_empty_list_when_not_found_in_any_movie(){
         List<Movie> allMovies = new ArrayList<>();
         allMovies.add(new Movie("The Shawshank Redemption", "Foo", Arrays.asList(Genre.DRAMA)));
         allMovies.add(new Movie("The Godfather", "Bar", Arrays.asList(Genre.CRIME, Genre.DRAMA)));
@@ -46,7 +46,7 @@ class HomeControllerTest {
     }
 
     @Test
-    void filter_by_query_returns_non_empty_list_when_found(){
+    public void filter_by_query_returns_non_empty_list_when_found(){
         List<Movie> allMovies = new ArrayList<>();
         allMovies.add(new Movie("The Shawshank Redemption", "Foo", Arrays.asList(Genre.DRAMA)));
         allMovies.add(new Movie("The Godfather", "Bar", Arrays.asList(Genre.CRIME, Genre.DRAMA)));
@@ -59,7 +59,7 @@ class HomeControllerTest {
     }
 
     @Test
-    void filter_by_query_returns_filtered_list_with_all_movies_containing_query(){
+    public void filter_by_query_returns_filtered_list_with_all_movies_containing_query(){
         List<Movie> allMovies = new ArrayList<>();
         allMovies.add(new Movie("The Shawshank Redemption", "Foo", Arrays.asList(Genre.DRAMA)));
         allMovies.add(new Movie("The Godfather", "Bar", Arrays.asList(Genre.CRIME, Genre.DRAMA)));
