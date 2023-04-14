@@ -30,6 +30,12 @@ public class HomeController implements Initializable {
     public JFXComboBox genreComboBox;
 
     @FXML
+    public JFXComboBox yearComboBox;
+
+    @FXML
+    public JFXComboBox ratingComboBox;
+
+    @FXML
     public JFXButton sortBtn;
 
     @FXML
@@ -51,12 +57,13 @@ public class HomeController implements Initializable {
         movieListView.setItems(observableMovies);   // set data of observable list to list view
         movieListView.setCellFactory(movieListView -> new MovieCell()); // use custom cell factory to display data
 
-        //add genre filter items with genreComboBox.getItems().addAll(...)
         genreComboBox.getItems().addAll(Genre.values());
         genreComboBox.setPromptText("Filter by Genre");
 
-        //add event handlers to buttons and call the regarding methods
-        // either set event handlers in the fxml file (onAction) or add them here
+        yearComboBox.setPromptText("Filter by Release Year");
+
+        ratingComboBox.setPromptText("Filter by Rating");
+
 
         // Sort button example:
         sortBtn.setOnAction(actionEvent -> {
@@ -109,7 +116,7 @@ public class HomeController implements Initializable {
     }
 
     public List<Movie> filterByQuery(List<Movie> unfiltered, String query){
-        List<Movie> filtered = new LinkedList<>();
+        List<Movie> filtered = new ArrayList<>();
         for(Movie m : unfiltered){
             if(m.containsSubstring(query)) filtered.add(m);
         }
