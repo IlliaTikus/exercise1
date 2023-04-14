@@ -62,12 +62,26 @@ public class HomeController implements Initializable {
         movieListView.setItems(observableMovies);   // set data of observable list to list view
         movieListView.setCellFactory(movieListView -> new MovieCell()); // use custom cell factory to display data
 
-        genreComboBox.getItems().addAll(Genre.values());
         genreComboBox.setPromptText("Filter by Genre");
+        allMovies.stream()
+                .flatMap(movie -> movie.getGenres().stream())
+                .distinct()
+                .sorted()
+                .forEach(genre -> genreComboBox.getItems().add(genre));
 
         yearComboBox.setPromptText("Filter by Release Year");
+        allMovies.stream()
+                .map(movie -> movie.getYear())
+                .distinct()
+                .sorted(Comparator.reverseOrder())
+                .forEach(year -> yearComboBox.getItems().add(year));
 
         ratingComboBox.setPromptText("Filter by Rating");
+        allMovies.stream()
+                .map(movie -> movie.getRating())
+                .distinct()
+                .sorted(Comparator.reverseOrder())
+                .forEach(rating -> ratingComboBox.getItems().add(rating));
 
 
         // Sort button example:

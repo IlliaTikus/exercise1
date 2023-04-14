@@ -7,20 +7,14 @@ public class Movie implements Comparable<Movie>{
     private String title;
     private String description;
     private List<Genre> genres;
-    private String year;
+    private String releaseYear;
     private String rating;
-
-    public Movie(String title, String description, List<Genre> genres) {
-        this.title = title;
-        this.description = description;
-        this.genres = genres;
-    }
 
     public Movie(String title, String description, List<Genre> genres, String year, String rating) {
         this.title = title;
         this.description = description;
         this.genres = genres;
-        this.year = year;
+        this.releaseYear = year;
         this.rating = rating;
     }
 
@@ -36,7 +30,7 @@ public class Movie implements Comparable<Movie>{
         return genres;
     }
 
-    public String getYear() { return year; }
+    public String getYear() { return releaseYear; }
 
     public String getRating() { return rating; }
 

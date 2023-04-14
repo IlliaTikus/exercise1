@@ -14,7 +14,7 @@ import java.util.List;
 public class MovieAPI {
     private static final OkHttpClient client = new OkHttpClient();
 
-    String run(String url) throws IOException {
+    public String run(String url) throws IOException {
         Request request = new Request.Builder()
                 .url(url)
 //                .addHeader("Custom-Header", "header-value")
