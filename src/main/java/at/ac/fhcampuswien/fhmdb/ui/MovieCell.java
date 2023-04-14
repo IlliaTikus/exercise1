@@ -17,8 +17,9 @@ public class MovieCell extends ListCell<Movie> {
     private final Label genre = new Label();
     private final Label year = new Label();
     private final Label rating = new Label();
+    private final Label actors = new Label();
     private final HBox details = new HBox(genre, year, rating);
-    private final VBox layout = new VBox(title, detail, details);
+    private final VBox layout = new VBox(title, detail, actors, details);
 
     @Override
     protected void updateItem(Movie movie, boolean empty) {
@@ -38,6 +39,7 @@ public class MovieCell extends ListCell<Movie> {
             genre.setText(genreWithoutBrackets);
             year.setText(movie.getYear());
             rating.setText(movie.getRating());
+            actors.setText(movie.getActors().toString().replaceAll("\\[|\\]", ""));
 
 
             // color scheme
@@ -47,6 +49,7 @@ public class MovieCell extends ListCell<Movie> {
             genre.getStyleClass().add("font-style: italic");
             year.getStyleClass().add("text-white");
             rating.getStyleClass().add("text-white");
+            actors.getStyleClass().add("text-white");
             layout.setBackground(new Background(new BackgroundFill(Color.web("#454545"), null, null)));
 
             // layout
@@ -57,6 +60,7 @@ public class MovieCell extends ListCell<Movie> {
             genre.setStyle("-fx-font-style: italic;");
             year.setFont(Font.font("Arial", 12));
             rating.setFont(Font.font("Arial", 12));
+            actors.setFont(Font.font("Arial", 12));
 
             layout.setPadding(new Insets(15));
 

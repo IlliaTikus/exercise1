@@ -17,6 +17,8 @@ import javafx.scene.control.TextField;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class HomeController implements Initializable {
     @FXML
@@ -142,4 +144,29 @@ public class HomeController implements Initializable {
         return filtered;
     }
 
+    public String getMostPopularActor(List<Movie> movies) {
+        Map<String, Long> actors = movies.stream()
+                .flatMap(movie -> movie.getActors().stream())
+                .filter(title -> title != null)
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+
+        Optional<Map.Entry<String, Long>> maxEntry = actors.entrySet()
+                .stream()
+                .max(Map.Entry.comparingByValue());
+
+        if (maxEntry.isPresent())
+            return maxEntry.get().getKey();
+        else return null;
+    }
+
+    public int getLongestMovieTitle(List<Movie> movies) {
+        Optional<String> title = movies.stream()
+                .map(movie -> movie.getTitle())
+                .max(Comparator.comparingInt(i -> i.length()));
+
+        if (title.isPresent())
+            return title.get().length();
+        else
+            return 0;
+    }
 }
