@@ -37,8 +37,8 @@ public class MovieCell extends ListCell<Movie> {
             );
             String genreWithoutBrackets = movie.getGenres().toString().replaceAll("\\[|\\]", "");
             genre.setText(genreWithoutBrackets);
-            year.setText(movie.getYear());
-            rating.setText(movie.getRating());
+            year.setText(String.valueOf(movie.getYear()));
+            rating.setText(String.valueOf(movie.getRating()));
             actors.setText(movie.getActors().toString().replaceAll("\\[|\\]", ""));
 
 

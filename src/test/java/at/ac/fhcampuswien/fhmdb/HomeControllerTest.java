@@ -92,4 +92,73 @@ class HomeControllerTest {
         }
     }
 
+    @Test
+    public void count_movies_from_returns_0_when_director_not_found_in_movie_list(){
+        List<Movie> allMovies = new ArrayList<>();
+        List<String> directorsWithSpielberg = Arrays.asList("Steven Spielberg", "Christopher Nolan");
+        List<String> directorsNoSpielberg = List.of("Christopher Nolan");
+        allMovies.add(new Movie("The Shawshank Redemption", "Foo", Arrays.asList(Genre.DRAMA),
+                "2000", "9.0", new ArrayList<>(), directorsWithSpielberg));
+        allMovies.add(new Movie("The Godfather", "Bar", Arrays.asList(Genre.CRIME, Genre.DRAMA),
+                "2000", "9.0", new ArrayList<>(), directorsNoSpielberg));
+        allMovies.add(new Movie("The Dark Knight", "Foo", Arrays.asList(Genre.ACTION, Genre.CRIME),
+                "2000", "9.0", new ArrayList<>(), directorsWithSpielberg));
+        long expected = 0;
+        long actual = new HomeController().countMoviesFrom(allMovies, "Martin Scorcese");
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void count_movies_from_returns_expected_count_when_director_found_in_movie_list(){
+        List<Movie> allMovies = new ArrayList<>();
+        List<String> directorsWithSpielberg = Arrays.asList("Steven Spielberg", "Christopher Nolan");
+        List<String> directorsNoSpielberg = List.of("Christopher Nolan");
+        allMovies.add(new Movie("The Shawshank Redemption", "Foo", Arrays.asList(Genre.DRAMA),
+                "2000", "9.0", new ArrayList<>(), directorsWithSpielberg));
+        allMovies.add(new Movie("The Godfather", "Bar", Arrays.asList(Genre.CRIME, Genre.DRAMA),
+                "2000", "9.0", new ArrayList<>(), directorsNoSpielberg));
+        allMovies.add(new Movie("The Dark Knight", "Foo", Arrays.asList(Genre.ACTION, Genre.CRIME),
+                "2000", "9.0", new ArrayList<>(), directorsWithSpielberg));
+        long expected = 2;
+        long actual = new HomeController().countMoviesFrom(allMovies, "Steven Spielberg");
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void get_movies_between_years_returns_empty_list_if_no_movies_released_between_given_years(){
+        List<Movie> allMovies = new ArrayList<>();
+        List<String> directorsWithSpielberg = Arrays.asList("Steven Spielberg", "Christopher Nolan");
+        List<String> directorsNoSpielberg = List.of("Christopher Nolan");
+        allMovies.add(new Movie("The Shawshank Redemption", "Foo", Arrays.asList(Genre.DRAMA),
+                "2000", "9.0", new ArrayList<>(), directorsWithSpielberg));
+        allMovies.add(new Movie("The Godfather", "Bar", Arrays.asList(Genre.CRIME, Genre.DRAMA),
+                "2002", "9.0", new ArrayList<>(), directorsNoSpielberg));
+        allMovies.add(new Movie("The Dark Knight", "Foo", Arrays.asList(Genre.ACTION, Genre.CRIME),
+                "2004", "9.0", new ArrayList<>(), directorsWithSpielberg));
+        allMovies.add(new Movie("Leon", "Foo", Arrays.asList(Genre.ACTION, Genre.FAMILY),
+                "2006", "9.0", new ArrayList<>(), directorsNoSpielberg));
+        List<Movie> actual = new HomeController().getMoviesBetweenYears(allMovies, 4000, 5000);
+        assertTrue(actual.isEmpty());
+    }
+
+    @Test
+    public void get_movies_between_years_returns_filtered_list_with_movies_released_between_given_years(){
+        List<Movie> allMovies = new ArrayList<>();
+        List<String> directorsWithSpielberg = Arrays.asList("Steven Spielberg", "Christopher Nolan");
+        List<String> directorsNoSpielberg = List.of("Christopher Nolan");
+        allMovies.add(new Movie("The Shawshank Redemption", "Foo", Arrays.asList(Genre.DRAMA),
+                "2000", "9.0", new ArrayList<>(), directorsWithSpielberg));
+        allMovies.add(new Movie("The Godfather", "Bar", Arrays.asList(Genre.CRIME, Genre.DRAMA),
+                "2002", "9.0", new ArrayList<>(), directorsNoSpielberg));
+        allMovies.add(new Movie("The Dark Knight", "Foo", Arrays.asList(Genre.ACTION, Genre.CRIME),
+                "2004", "9.0", new ArrayList<>(), directorsWithSpielberg));
+        allMovies.add(new Movie("Leon", "Foo", Arrays.asList(Genre.ACTION, Genre.FAMILY),
+                "2006", "9.0", new ArrayList<>(), directorsNoSpielberg));
+        List<Movie> expected = new ArrayList<>();
+        expected.add(allMovies.get(1));
+        expected.add(allMovies.get(2));
+        List<Movie> actual = new HomeController().getMoviesBetweenYears(allMovies, 2001, 2005);
+        assertEquals(expected, actual);
+    }
+
 }

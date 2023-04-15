@@ -105,25 +105,31 @@ public class HomeController implements Initializable {
         });
 
         searchBtn.setOnAction(actionEvent -> {
-            String query = searchField.getText();
+            String query = searchField.getText().isBlank() ? null : searchField.getText();
+            String genre = genreComboBox.getValue() != null ? genreComboBox.getValue().toString().toUpperCase() : null;
+            String releaseYear = yearComboBox.getValue() != null ? yearComboBox.getValue().toString() : null;
+            String rating = ratingComboBox.getValue() != null ? ratingComboBox.getValue().toString() : null;
+            if(query == null && genre == null && releaseYear == null && rating == null) return;
+
             List<Movie> filtered = null;
-            if(!query.isBlank()){
-                filtered = filterByQuery(allMovies, query);
+            try {
+                filtered = MovieAPI.getMovieList(query, genre, releaseYear, rating);
+            } catch (IOException e) {
+                System.out.println("Error occured when trying to fetch movie list!");
+                System.out.println(e.getMessage());
+                e.printStackTrace();
+                return;
             }
-            if(genreComboBox.getValue() != null) {
-                Genre genre = Genre.valueOf(genreComboBox.getValue().toString().toUpperCase());
-                observableMovies.clear();
-                filterByGenre((filtered != null ? filtered : allMovies), genre);
-            }else if(filtered != null){
-                observableMovies.clear();
-                observableMovies.addAll(filtered);
-            }
+            observableMovies.clear();
+            observableMovies.addAll(filtered);
             movieListView.refresh();
         });
 
         resetBtn.setOnAction((actionEvent -> {
             resetView(allMovies);
-            genreComboBox.valueProperty().set(null);
+            genreComboBox.getSelectionModel().clearSelection();
+            yearComboBox.getSelectionModel().clearSelection();
+            ratingComboBox.getSelectionModel().clearSelection();
             searchField.clear();
         }));
     }
@@ -176,6 +182,15 @@ public class HomeController implements Initializable {
     }
 
     public long countMoviesFrom(List<Movie> movies, String director){
-        return 0L;
+        return movies.stream()
+                .flatMap(movie -> movie.getDirectors().stream())
+                .filter(dir -> dir.equals(director)).count();
     }
+
+    public List<Movie> getMoviesBetweenYears(List<Movie> movies, int startYear, int endYear){
+        return movies.stream()
+                .filter(movie -> movie.getYear() >= startYear && movie.getYear() <= endYear)
+                .collect(Collectors.toList());
+    }
+
 }

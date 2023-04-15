@@ -34,7 +34,7 @@ public class MovieAPI {
         return new ArrayList<>(Arrays.asList(moviesArray));
     }
 
-    public static List<Movie> getMovieList(String query, String genre, Integer releaseYear, Double rating) throws IOException {
+    public static List<Movie> getMovieList(String query, String genre, String releaseYear, String rating) throws IOException {
         StringBuilder url = new StringBuilder("https://prog2.fh-campuswien.ac.at/movies");
         boolean params = false;
         if(query!=null){
