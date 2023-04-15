@@ -1,7 +1,9 @@
 package at.ac.fhcampuswien.fhmdb.models;
 
+import at.ac.fhcampuswien.fhmdb.api.MovieAPI;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -13,13 +15,23 @@ class MovieTest {
 
     @Test
     public void initialized_movie_list_is_not_null(){
-        List<Movie> movieList = Movie.initializeMovies();
+        List<Movie> movieList = null;
+        try {
+            movieList = MovieAPI.initializeMovies();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         assertNotNull(movieList);
     }
 
     @Test
     public void initialized_movie_list_is_empty_returns_false(){
-        List<Movie> movieList = Movie.initializeMovies();
+        List<Movie> movieList = null;
+        try {
+            movieList = MovieAPI.initializeMovies();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         assertFalse(movieList.isEmpty());
     }
 
@@ -59,7 +71,12 @@ class MovieTest {
     @Test
     public void sort_movie_list_ascending_returns_true(){
 //        ARRANGE
-        List<Movie> movieList = Movie.initializeMovies();
+        List<Movie> movieList = null;
+        try {
+            movieList = MovieAPI.initializeMovies();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
 //        ACT
         Collections.sort(movieList);
@@ -75,7 +92,12 @@ class MovieTest {
     @Test
     public void sort_movie_list_descending_returns_true(){
 //        ARRANGE
-        List<Movie> movieList = Movie.initializeMovies();
+        List<Movie> movieList = null;
+        try {
+            movieList = MovieAPI.initializeMovies();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
 //        ACT
         Collections.sort(movieList);

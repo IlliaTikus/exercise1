@@ -10,14 +10,23 @@ public class Movie implements Comparable<Movie>{
     private String releaseYear;
     private String rating;
     private List<String> mainCast;
+    private List<String> directors;
 
-    public Movie(String title, String description, List<Genre> genres, String year, String rating, List<String> mainCast) {
+    public Movie(String title, String description, List<Genre> genres) {
+        this.title = title;
+        this.description = description;
+        this.genres = genres;
+    }
+
+    public Movie(String title, String description, List<Genre> genres, String year, String rating,
+                 List<String> mainCast, List<String> directors) {
         this.title = title;
         this.description = description;
         this.genres = genres;
         this.releaseYear = year;
         this.rating = rating;
         this.mainCast = mainCast;
+        this.directors = directors;
     }
 
     public String getTitle() {
@@ -37,6 +46,8 @@ public class Movie implements Comparable<Movie>{
     public String getRating() { return rating; }
 
     public List<String> getActors() { return mainCast; }
+
+    public List<String> getDirectors() { return directors; }
 
     public boolean containsSubstring(String substring){
         return String.format("%s %s", title, description).toLowerCase().contains(substring.toLowerCase());

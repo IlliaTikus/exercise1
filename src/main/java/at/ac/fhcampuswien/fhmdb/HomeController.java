@@ -45,15 +45,20 @@ public class HomeController implements Initializable {
     @FXML
     public JFXButton resetBtn;
 
-    public List<Movie> allMovies = MovieAPI.initializeMovies();
+    public List<Movie> allMovies;
 
     public final ObservableList<Movie> observableMovies = FXCollections.observableArrayList();   // automatically updates corresponding UI elements when underlying data changes
 
-    public HomeController() throws IOException {
+    public HomeController() {
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        try {
+            allMovies = MovieAPI.initializeMovies();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         resetBtn.setCursor(Cursor.HAND);
         sortBtn.setCursor(Cursor.HAND);
         searchBtn.setCursor(Cursor.HAND);
@@ -168,5 +173,9 @@ public class HomeController implements Initializable {
             return title.get().length();
         else
             return 0;
+    }
+
+    public long countMoviesFrom(List<Movie> movies, String director){
+        return 0L;
     }
 }
