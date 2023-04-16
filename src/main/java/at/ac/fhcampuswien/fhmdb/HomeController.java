@@ -165,9 +165,14 @@ public class HomeController implements Initializable {
                 .stream()
                 .max(Map.Entry.comparingByValue());
 
-        if (maxEntry.isPresent())
-            return maxEntry.get().getKey();
-        else return null;
+        boolean isValuePresentInOtherKeys = actors.entrySet()
+                .stream()
+                .filter(entry -> !entry.equals(maxEntry))
+                .anyMatch(entry -> entry.getValue().equals(maxEntry.get().getValue()));
+
+        if (isValuePresentInOtherKeys)
+            return null;
+        else return maxEntry.get().getKey();
     }
 
     public int getLongestMovieTitle(List<Movie> movies) {
