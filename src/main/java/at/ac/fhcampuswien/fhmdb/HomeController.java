@@ -158,21 +158,15 @@ public class HomeController implements Initializable {
     public String getMostPopularActor(List<Movie> movies) {
         Map<String, Long> actors = movies.stream()
                 .flatMap(movie -> movie.getActors().stream())
-                .filter(title -> title != null)
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 
         Optional<Map.Entry<String, Long>> maxEntry = actors.entrySet()
                 .stream()
                 .max(Map.Entry.comparingByValue());
 
-        boolean isValuePresentInOtherKeys = actors.entrySet()
-                .stream()
-                .filter(entry -> !entry.equals(maxEntry))
-                .anyMatch(entry -> entry.getValue().equals(maxEntry.get().getValue()));
-
-        if (isValuePresentInOtherKeys)
+        if (!maxEntry.isPresent())
             return null;
-        else return maxEntry.get().getKey();
+        return maxEntry.get().getKey();
     }
 
     public int getLongestMovieTitle(List<Movie> movies) {

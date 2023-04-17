@@ -179,20 +179,6 @@ class HomeControllerTest {
     }
 
     @Test
-    public void get_most_popular_actors_returns_false_if_no_actor_found () {
-        List<Movie> allMovies = new ArrayList<>();
-        allMovies.add(new Movie("The Shawshank Redemption", "Foo", Arrays.asList(Genre.DRAMA),
-                "2000", "9.0", Arrays.asList("Marlon Brando", "Liam Neeson"), Arrays.asList("Francis Ford Coppola")));
-        allMovies.add(new Movie("The Godfather", "Bar", Arrays.asList(Genre.CRIME, Genre.DRAMA),
-                "2000", "9.0", Arrays.asList("Heath Ledger", "Al Pacino"), Arrays.asList("Frank Darabont")));
-        allMovies.add(new Movie("The Dark Knight", "Foo", Arrays.asList(Genre.ACTION, Genre.CRIME),
-                "2000", "9.0", Arrays.asList("Ralph Fiennes", "Ben Kingsley"), Arrays.asList("Christopher Nolan")));
-
-        String actual = new HomeController().getMostPopularActor(allMovies);
-        assertEquals(null, actual);
-    }
-
-    @Test
     public void get_longest_movie_title_returns_length () {
         List<Movie> allMovies = new ArrayList<>();
         allMovies.add(new Movie("The Shawshank Redemption", "Foo", Arrays.asList(Genre.DRAMA),
