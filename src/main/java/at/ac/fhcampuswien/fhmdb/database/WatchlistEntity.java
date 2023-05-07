@@ -7,7 +7,7 @@ import com.j256.ormlite.table.DatabaseTable;
 import java.util.List;
 
 @DatabaseTable(tableName = "watchlist_movies")
-public class WatchlistMovieEntity {
+public class WatchlistEntity {
     @DatabaseField(generatedId = true)
     private long id;
     @DatabaseField()
@@ -27,9 +27,9 @@ public class WatchlistMovieEntity {
     @DatabaseField()
     private double rating;
 
-    public WatchlistMovieEntity(){}
+    public WatchlistEntity(){}
 
-    public WatchlistMovieEntity(String apiId, String title, String description, List<Genre> genres, int releaseYear, String imgUrl, int lengthInMinutes, double rating) {
+    public WatchlistEntity(String apiId, String title, String description, List<Genre> genres, int releaseYear, String imgUrl, int lengthInMinutes, double rating) {
         this.apiId = apiId;
         this.title = title;
         this.description = description;

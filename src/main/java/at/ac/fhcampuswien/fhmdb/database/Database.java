@@ -1,6 +1,5 @@
-package at.ac.fhcampuswien.fhmdb.data;
+package at.ac.fhcampuswien.fhmdb.database;
 
-import at.ac.fhcampuswien.fhmdb.database.WatchlistMovieEntity;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
@@ -13,14 +12,14 @@ public class Database {
     private static final String username = "user"; // TODO DB username input
     private static final String password = "password"; // TODO DB password input
     private ConnectionSource connectionSource;
-    private Dao<WatchlistMovieEntity, Long> dao;
+    private Dao<WatchlistEntity, Long> dao;
 
     private static Database instance;
 
     private Database() {
         try {
             createConnectionSource();
-            dao = DaoManager.createDao(connectionSource, WatchlistMovieEntity.class);
+            dao = DaoManager.createDao(connectionSource, WatchlistEntity.class);
             createTables();
         } catch (SQLException sqlException){
             System.out.println(sqlException.getMessage());
@@ -36,7 +35,7 @@ public class Database {
     }
 
     private void createTables() throws SQLException {
-        TableUtils.createTableIfNotExists(connectionSource, WatchlistMovieEntity.class);
+        TableUtils.createTableIfNotExists(connectionSource, WatchlistEntity.class);
     }
 
     public static Database getInstance() {
@@ -46,7 +45,7 @@ public class Database {
         return instance;
     }
 
-    public Dao<WatchlistMovieEntity, Long> getWatchlistDao() {
+    public Dao<WatchlistEntity, Long> getWatchlistDao() {
         return this.dao;
     }
 }
