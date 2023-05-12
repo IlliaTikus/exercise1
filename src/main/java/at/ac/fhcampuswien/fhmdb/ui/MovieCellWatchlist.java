@@ -12,7 +12,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
-public class MovieCell extends ListCell<Movie> {
+public class MovieCellWatchlist extends ListCell<Movie> {
     private final Label title = new Label();
     private final Label detail = new Label();
     private final Label genre = new Label();
@@ -45,7 +45,7 @@ public class MovieCell extends ListCell<Movie> {
             year.setText(String.valueOf(movie.getYear()));
             rating.setText(String.valueOf(movie.getRating()));
             actors.setText(movie.getActors().toString().replaceAll("\\[|\\]", ""));
-            button.setText("Watchlist");
+            button.setText("Remove");
 
 
             // color scheme

@@ -1,16 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXComboBox?>
-<?import com.jfoenix.controls.JFXListView?>
+<?import com.jfoenix.controls.*?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
-
+<?import javafx.scene.control.*?>
 <?import javafx.scene.Cursor?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
 <VBox prefHeight="331.0" prefWidth="570.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.fhcampuswien.fhmdb.HomeController">
    <HBox alignment="CENTER_LEFT" prefHeight="42.0" prefWidth="347.0" spacing="20.0" style="-fx-background-color: black;">
       <padding>
@@ -26,6 +21,19 @@
             </padding>
          </Label>
          <Label styleClass="text-white" stylesheets="@styles.css" text="Welcome to FHMDb!" />
+         <MenuBar style="-fx-background-radius: 3">
+            <menus>
+               <Menu text="View" style="-fx-text-alignment:center" >
+                  <items>
+                     <MenuItem style="-fx-pref-width: 110; -fx-pref-height: 22" fx:id="home" onAction="#onHome" text="Home"/>
+                     <MenuItem style="-fx-pref-width: 110; -fx-pref-height: 22" fx:id="watchlist" onAction="#onWatchlist" text="Watchlist"/>
+                  </items>
+               </Menu>
+            </menus>
+            <cursor>
+               <Cursor fx:constant="HAND" />
+            </cursor>
+         </MenuBar>
       </children>
    </HBox>
    <HBox spacing="5.0" styleClass="background-black" stylesheets="@styles.css">

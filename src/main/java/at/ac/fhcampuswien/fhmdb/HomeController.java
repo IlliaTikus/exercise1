@@ -9,10 +9,15 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXListView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
+import javafx.scene.Scene;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
@@ -44,6 +49,9 @@ public class HomeController implements Initializable {
 
     @FXML
     public JFXButton resetBtn;
+
+    @FXML
+    public MenuItem watchlist;
 
     public List<Movie> allMovies;
 
@@ -132,6 +140,7 @@ public class HomeController implements Initializable {
             ratingComboBox.getSelectionModel().clearSelection();
             searchField.clear();
         }));
+
     }
 
     public void filterByGenre(List<Movie> allMovies, Genre genre) {
@@ -192,4 +201,21 @@ public class HomeController implements Initializable {
                 .collect(Collectors.toList());
     }
 
+    public void onWatchlist(ActionEvent actionEvent) throws IOException {
+        Stage stage = (Stage) resetBtn.getScene().getWindow();
+        FXMLLoader fxmlLoader = new FXMLLoader(FhmdbApplication.class.getResource("watchlist.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 890, 620);
+        scene.getStylesheets().add(Objects.requireNonNull(FhmdbApplication.class.getResource("styles.css")).toExternalForm());
+        stage.setTitle("Watchlist");
+        stage.setScene(scene);
+    }
+
+    public void onHome(ActionEvent actionEvent) throws IOException {
+        Stage stage = (Stage) resetBtn.getScene().getWindow();
+        FXMLLoader fxmlLoader = new FXMLLoader(FhmdbApplication.class.getResource("home-view.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 890, 620);
+        scene.getStylesheets().add(Objects.requireNonNull(FhmdbApplication.class.getResource("styles.css")).toExternalForm());
+        stage.setTitle("Watchlist");
+        stage.setScene(scene);
+    }
 }
