@@ -8,6 +8,7 @@ public class Movie implements Comparable<Movie>{
     private String title;
     private String description;
     private List<Genre> genres;
+    private String genresstring;
     private int releaseYear;
     private double rating;
     private List<String> mainCast;
@@ -31,6 +32,14 @@ public class Movie implements Comparable<Movie>{
         this.rating = Double.parseDouble(rating);
         this.mainCast = mainCast;
         this.directors = directors;
+    }
+
+    public Movie(String title, String description, String genres, int year, double rating) {
+        this.title = title;
+        this.description = description;
+        this.genresstring = genres;
+        this.releaseYear = year;
+        this.rating = rating;
     }
 
     public Movie(String title, String description, List<Genre> genres, String year, String rating,
@@ -68,6 +77,10 @@ public class Movie implements Comparable<Movie>{
     public String getImgUrl() { return imgUrl; }
 
     public int getLengthInMinutes() { return lengthInMinutes; }
+
+    public String getGenresstring() {
+        return genresstring;
+    }
 
     public List<String> getWriters() { return writers; }
 

@@ -45,4 +45,27 @@ public class WatchlistEntity {
         return "test";
     }
 
+    public long getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getGenres() {
+        return genres;
+    }
+
+    public int getYear() {
+        return releaseYear;
+    }
+
+    public double getRating() {
+        return rating;
+    }
 }

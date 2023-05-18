@@ -1,6 +1,8 @@
 package at.ac.fhcampuswien.fhmdb;
 
 import at.ac.fhcampuswien.fhmdb.api.MovieAPI;
+import at.ac.fhcampuswien.fhmdb.database.WatchlistEntity;
+import at.ac.fhcampuswien.fhmdb.database.WatchlistRepository;
 import at.ac.fhcampuswien.fhmdb.models.Genre;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
 import at.ac.fhcampuswien.fhmdb.ui.MovieCell;
@@ -75,7 +77,7 @@ public class HomeController implements Initializable {
 
         // initialize UI stuff
         movieListView.setItems(observableMovies);   // set data of observable list to list view
-        movieListView.setCellFactory(movieListView -> new MovieCell()); // use custom cell factory to display data
+        movieListView.setCellFactory(movieListView -> new MovieCell(onAddToWatchlistClicked)); // use custom cell factory to display data
 
         genreComboBox.setPromptText("Filter by Genre");
         allMovies.stream()
@@ -218,4 +220,11 @@ public class HomeController implements Initializable {
         stage.setTitle("Watchlist");
         stage.setScene(scene);
     }
+
+    private final ClickEventHandler onAddToWatchlistClicked = (clickedItem) -> {
+        new WatchlistRepository().addToWatchlist(new WatchlistEntity
+                (clickedItem.getId(),clickedItem.getTitle(),clickedItem.getDescription(),
+                        clickedItem.getGenres(),clickedItem.getYear(), clickedItem.getImgUrl(), clickedItem.getLengthInMinutes(), clickedItem.getRating()));
+    };
+
 }

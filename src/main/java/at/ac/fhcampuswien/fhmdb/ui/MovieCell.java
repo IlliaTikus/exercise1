@@ -1,5 +1,6 @@
 package at.ac.fhcampuswien.fhmdb.ui;
 
+import at.ac.fhcampuswien.fhmdb.ClickEventHandler;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -12,6 +13,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
+import java.sql.SQLException;
+
 public class MovieCell extends ListCell<Movie> {
     private final Label title = new Label();
     private final Label detail = new Label();
@@ -23,6 +26,18 @@ public class MovieCell extends ListCell<Movie> {
     private final HBox details = new HBox(genre, year, rating);
     private final HBox titleButton = new HBox(title, button);
     private final VBox layout = new VBox(titleButton, detail, actors, details);
+
+
+    public MovieCell(ClickEventHandler addToWatchlistClicked) {
+        super();
+        button.setOnMouseClicked(mouseEvent -> {
+            try {
+                addToWatchlistClicked.onClick(getItem());
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        });
+    }
 
 
     @Override
