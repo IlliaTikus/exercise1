@@ -34,18 +34,8 @@ public class WatchlistController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        try {
-            List<WatchlistEntity> watchlist = new WatchlistRepository().getAll();
-            for (int i = 0; i < watchlist.size(); i++) {
-                Movie movie = new Movie(watchlist.get(i).getTitle(), watchlist.get(i).getDescription(),
-                        watchlist.get(i).getGenres(), watchlist.get(i).getReleaseYear(), watchlist.get(i).getRating());
-                allMovies.add(movie);
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
 
-        observableMovies.addAll(allMovies);
+        observableMovies.addAll(initializeMovies());
 
         // initialize UI stuff
         movieListView.setItems(observableMovies);   // set data of observable list to list view
@@ -74,5 +64,26 @@ public class WatchlistController implements Initializable {
         new WatchlistRepository().removeFromWatchlist(new WatchlistEntity
                 (clickedItem.getId(),clickedItem.getTitle(),clickedItem.getDescription(),
                         clickedItem.getGenres(),clickedItem.getYear(), clickedItem.getImgUrl(), clickedItem.getLengthInMinutes(), clickedItem.getRating()));
+        observableMovies.clear();
+        movieListView.refresh();
+        observableMovies.addAll(initializeMovies());
+        movieListView.refresh();
     };
+
+    public List<Movie> initializeMovies() {
+        try {
+            if(!allMovies.isEmpty())
+                allMovies.clear();
+            List<WatchlistEntity> watchlist = new WatchlistRepository().getAll();
+            for (int i = 0; i < watchlist.size(); i++) {
+                Movie movie = new Movie(watchlist.get(i).getTitle(), watchlist.get(i).getDescription(),
+                        watchlist.get(i).getGenres(), watchlist.get(i).getReleaseYear(), watchlist.get(i).getRating(),
+                        watchlist.get(i).getApiId(), watchlist.get(i).getImgUrl(), watchlist.get(i).getLengthInMinutes());
+                allMovies.add(movie);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return allMovies;
+    }
 }
