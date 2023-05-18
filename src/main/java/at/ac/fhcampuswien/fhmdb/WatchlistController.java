@@ -38,7 +38,7 @@ public class WatchlistController implements Initializable {
             List<WatchlistEntity> watchlist = new WatchlistRepository().getAll();
             for (int i = 0; i < watchlist.size(); i++) {
                 Movie movie = new Movie(watchlist.get(i).getTitle(), watchlist.get(i).getDescription(),
-                        watchlist.get(i).getGenres(), watchlist.get(i).getYear(), watchlist.get(i).getRating());
+                        watchlist.get(i).getGenres(), watchlist.get(i).getReleaseYear(), watchlist.get(i).getRating());
                 allMovies.add(movie);
             }
         } catch (SQLException e) {

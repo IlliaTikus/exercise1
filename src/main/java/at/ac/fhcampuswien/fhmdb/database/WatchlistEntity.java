@@ -41,8 +41,18 @@ public class WatchlistEntity {
     }
 
     private String genresToString(List<Genre> genres) {
-        // TODO Methode programming
-        return "test";
+        if (genres == null) {
+            return "";
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < genres.size(); i++) {
+            sb.append(genres.get(i));
+            if (i < genres.size() - 1) {
+                sb.append(",");
+            }
+        }
+        return sb.toString();
     }
 
     public long getId() {
@@ -61,11 +71,23 @@ public class WatchlistEntity {
         return genres;
     }
 
-    public int getYear() {
+    public int getReleaseYear() {
         return releaseYear;
     }
 
     public double getRating() {
         return rating;
+    }
+
+    public String getApiId() {
+        return apiId;
+    }
+
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public int getLengthInMinutes() {
+        return lengthInMinutes;
     }
 }
