@@ -18,7 +18,6 @@ public class FhmdbApplication extends Application {
         stage.setTitle("FHMDb");
         stage.setScene(scene);
         stage.show();
-        Database.getInstance();
     }
 
     public static void main(String[] args) {
