@@ -1,7 +1,9 @@
 package at.ac.fhcampuswien.fhmdb.ui;
 
 import at.ac.fhcampuswien.fhmdb.ClickEventHandler;
+import at.ac.fhcampuswien.fhmdb.exceptions.DatabaseException;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -14,6 +16,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
 import java.sql.SQLException;
+
+import static java.lang.Thread.sleep;
 
 public class MovieCell extends ListCell<Movie> {
     private final Label title = new Label();
@@ -33,9 +37,24 @@ public class MovieCell extends ListCell<Movie> {
         button.setOnMouseClicked(mouseEvent -> {
             try {
                 addToWatchlistClicked.onClick(getItem());
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+                Platform.runLater(() -> {
+                    button.setText("Added");
+                    button.getStyleClass().add("background-white");
+                });
+                Thread sleep = new Thread(() -> {
+                    try {
+                        sleep(3000);
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                    }
+                    Platform.runLater(() -> {
+                        button.setText("Watchlist");
+                        button.getStyleClass().removeIf(style -> style.equals("background-white"));
+                    });
+                });
+                sleep.setDaemon(true);
+                sleep.start();
+            }catch (DatabaseException ignored){}
         });
     }
 
