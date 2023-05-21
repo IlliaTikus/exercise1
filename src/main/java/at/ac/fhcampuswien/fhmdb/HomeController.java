@@ -3,8 +3,11 @@ package at.ac.fhcampuswien.fhmdb;
 import at.ac.fhcampuswien.fhmdb.api.MovieAPI;
 import at.ac.fhcampuswien.fhmdb.database.WatchlistEntity;
 import at.ac.fhcampuswien.fhmdb.database.WatchlistRepository;
+import at.ac.fhcampuswien.fhmdb.exceptions.DatabaseException;
+import at.ac.fhcampuswien.fhmdb.exceptions.MovieApiException;
 import at.ac.fhcampuswien.fhmdb.models.Genre;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
+import at.ac.fhcampuswien.fhmdb.ui.Alerts;
 import at.ac.fhcampuswien.fhmdb.ui.MovieCell;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
@@ -17,6 +20,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -66,8 +71,9 @@ public class HomeController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
             allMovies = MovieAPI.initializeMovies();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (MovieApiException e) {
+            allMovies = new ArrayList<>();
+            Alerts.showAlert(AlertType.ERROR, "An error occured while initializing movies:\n"+e.getMessage());
         }
         resetBtn.setCursor(Cursor.HAND);
         sortBtn.setCursor(Cursor.HAND);
@@ -124,10 +130,9 @@ public class HomeController implements Initializable {
             List<Movie> filtered = null;
             try {
                 filtered = MovieAPI.getMovieList(query, genre, releaseYear, rating);
-            } catch (IOException e) {
-                System.out.println("Error occured when trying to fetch movie list!");
-                System.out.println(e.getMessage());
-                e.printStackTrace();
+            } catch (MovieApiException e) {
+                Alerts.showAlert(AlertType.ERROR,
+                        "An error occured while trying to fetch movie list:\n"+e.getMessage());
                 return;
             }
             observableMovies.clear();
@@ -222,9 +227,15 @@ public class HomeController implements Initializable {
     }
 
     private final ClickEventHandler onAddToWatchlistClicked = (clickedItem) -> {
-        new WatchlistRepository().addToWatchlist(new WatchlistEntity
-                (String.valueOf(clickedItem.getId()),clickedItem.getTitle(),clickedItem.getDescription(),
-                        clickedItem.getGenres(),clickedItem.getYear(), clickedItem.getImgUrl(), clickedItem.getLengthInMinutes(), clickedItem.getRating()));
+        try {
+            new WatchlistRepository().addToWatchlist(new WatchlistEntity
+                    (String.valueOf(clickedItem.getId()), clickedItem.getTitle(), clickedItem.getDescription(),
+                            clickedItem.getGenres(), clickedItem.getYear(), clickedItem.getImgUrl(),
+                            clickedItem.getLengthInMinutes(), clickedItem.getRating()));
+        }catch (DatabaseException e){
+            Alerts.showAlert(AlertType.WARNING, e.getMessage());
+            throw new DatabaseException(e.getMessage());
+        }
     };
 
 }

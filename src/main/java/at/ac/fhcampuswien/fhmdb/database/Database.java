@@ -1,5 +1,6 @@
 package at.ac.fhcampuswien.fhmdb.database;
 
+import at.ac.fhcampuswien.fhmdb.exceptions.DatabaseException;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
@@ -20,14 +21,14 @@ public class Database {
 
     private static Database instance;
 
-    private Database() {
+    private Database() throws DatabaseException{
         try {
             loadConfigurations();
             createConnectionSource();
             createDao();
             createTables();
         } catch (SQLException | IOException e) {
-            System.out.println(e.getMessage());
+            throw new DatabaseException("Error loading database!", e);
         }
     }
 
@@ -42,15 +43,15 @@ public class Database {
         this.password = properties.getProperty("db.password");
     }
 
-    public void createConnectionSource() throws SQLException {
+    private void createConnectionSource() throws SQLException {
         this.connectionSource = new JdbcConnectionSource(this.DB_URL, this.username, this.password);
     }
 
-    public void createDao() throws SQLException {
+    private void createDao() throws SQLException {
         this.dao = DaoManager.createDao(connectionSource, WatchlistEntity.class);
     }
 
-    public ConnectionSource getConnectionSource() {
+    private ConnectionSource getConnectionSource() {
         return this.connectionSource;
     }
 
@@ -58,7 +59,7 @@ public class Database {
         TableUtils.createTableIfNotExists(connectionSource, WatchlistEntity.class);
     }
 
-    public static Database getInstance() {
+    public static Database getInstance() throws DatabaseException{
         if (instance == null) {
             instance = new Database();
         }

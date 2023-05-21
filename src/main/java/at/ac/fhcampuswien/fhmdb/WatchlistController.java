@@ -2,7 +2,9 @@ package at.ac.fhcampuswien.fhmdb;
 
 import at.ac.fhcampuswien.fhmdb.database.WatchlistEntity;
 import at.ac.fhcampuswien.fhmdb.database.WatchlistRepository;
+import at.ac.fhcampuswien.fhmdb.exceptions.DatabaseException;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
+import at.ac.fhcampuswien.fhmdb.ui.Alerts;
 import at.ac.fhcampuswien.fhmdb.ui.MovieCellWatchlist;
 import com.jfoenix.controls.JFXListView;
 import javafx.collections.FXCollections;
@@ -12,6 +14,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -61,10 +64,15 @@ public class WatchlistController implements Initializable {
     }
 
     private final ClickEventHandler onRemoveFromWatchlistClicked = (clickedItem) -> {
-        new WatchlistRepository().removeFromWatchlist(new WatchlistEntity
-                (clickedItem.getId(), clickedItem.getTitle(),clickedItem.getDescription(),
-                        clickedItem.getGenres(),clickedItem.getYear(), clickedItem.getImgUrl(), clickedItem.getLengthInMinutes(), clickedItem.getRating()));
-        observableMovies.remove(clickedItem);
+        try {
+            new WatchlistRepository().removeFromWatchlist(new WatchlistEntity
+                    (clickedItem.getId(), clickedItem.getTitle(), clickedItem.getDescription(),
+                            clickedItem.getGenres(), clickedItem.getYear(), clickedItem.getImgUrl(),
+                            clickedItem.getLengthInMinutes(), clickedItem.getRating()));
+            observableMovies.remove(clickedItem);
+        }catch (DatabaseException e){
+            Alerts.showAlert(AlertType.ERROR, e.getMessage());
+        }
     };
 
     public List<Movie> initializeMovies() {
@@ -76,8 +84,8 @@ public class WatchlistController implements Initializable {
                         watchlist.get(i).getApiId(), watchlist.get(i).getImgUrl(), watchlist.get(i).getLengthInMinutes());
                 allMovies.add(movie);
             }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        } catch (DatabaseException e) {
+            Alerts.showAlert(AlertType.ERROR, e.getMessage());
         }
         return allMovies;
     }

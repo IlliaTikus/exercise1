@@ -29,11 +29,7 @@ public class MovieCellWatchlist extends ListCell<Movie> {
     public MovieCellWatchlist(ClickEventHandler removeFromWatchlistClicked) {
         super();
         button.setOnMouseClicked(mouseEvent -> {
-            try {
-                removeFromWatchlistClicked.onClick(getItem());
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+            removeFromWatchlistClicked.onClick(getItem());
         });
     }
 
