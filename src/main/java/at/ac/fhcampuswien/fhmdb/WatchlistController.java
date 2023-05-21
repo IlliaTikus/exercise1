@@ -62,10 +62,16 @@ public class WatchlistController implements Initializable {
     }
 
     private final ClickEventHandler onRemoveFromWatchlistClicked = (clickedItem) -> {
-        new WatchlistRepository().removeFromWatchlist(new WatchlistEntity
-                (clickedItem.getId(), clickedItem.getTitle(),clickedItem.getDescription(),
-                        clickedItem.getGenres(),clickedItem.getYear(), clickedItem.getImgUrl(), clickedItem.getLengthInMinutes(), clickedItem.getRating()));
-        observableMovies.remove(clickedItem);
+        try {
+            new WatchlistRepository().removeFromWatchlist(new WatchlistEntity
+                    (clickedItem.getId(), clickedItem.getTitle(), clickedItem.getDescription(),
+                            clickedItem.getGenres(), clickedItem.getYear(), clickedItem.getImgUrl(),
+                            clickedItem.getLengthInMinutes(), clickedItem.getRating()));
+            observableMovies.remove(clickedItem);
+        }catch (DatabaseException e){
+            //TODO ui exception notif
+            System.out.println(e.getMessage());
+        }
     };
 
     public List<Movie> initializeMovies() {
@@ -78,6 +84,7 @@ public class WatchlistController implements Initializable {
                 allMovies.add(movie);
             }
         } catch (DatabaseException e) {
+            //TODO ui exception notif
             throw new RuntimeException(e);
         }
         return allMovies;

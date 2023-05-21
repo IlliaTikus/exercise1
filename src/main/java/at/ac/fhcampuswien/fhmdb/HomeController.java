@@ -3,6 +3,7 @@ package at.ac.fhcampuswien.fhmdb;
 import at.ac.fhcampuswien.fhmdb.api.MovieAPI;
 import at.ac.fhcampuswien.fhmdb.database.WatchlistEntity;
 import at.ac.fhcampuswien.fhmdb.database.WatchlistRepository;
+import at.ac.fhcampuswien.fhmdb.exceptions.DatabaseException;
 import at.ac.fhcampuswien.fhmdb.exceptions.MovieApiException;
 import at.ac.fhcampuswien.fhmdb.models.Genre;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
@@ -68,7 +69,9 @@ public class HomeController implements Initializable {
         try {
             allMovies = MovieAPI.initializeMovies();
         } catch (MovieApiException e) {
-            throw new RuntimeException(e);
+            //TODO ui exception notif
+            System.out.println(e.getMessage());
+            allMovies = new ArrayList<>();
         }
         resetBtn.setCursor(Cursor.HAND);
         sortBtn.setCursor(Cursor.HAND);
@@ -126,6 +129,7 @@ public class HomeController implements Initializable {
             try {
                 filtered = MovieAPI.getMovieList(query, genre, releaseYear, rating);
             } catch (MovieApiException e) {
+                //TODO ui exception notif
                 System.out.println("Error occured when trying to fetch movie list!");
                 System.out.println(e.getMessage());
                 e.printStackTrace();
@@ -223,9 +227,15 @@ public class HomeController implements Initializable {
     }
 
     private final ClickEventHandler onAddToWatchlistClicked = (clickedItem) -> {
-        new WatchlistRepository().addToWatchlist(new WatchlistEntity
-                (String.valueOf(clickedItem.getId()),clickedItem.getTitle(),clickedItem.getDescription(),
-                        clickedItem.getGenres(),clickedItem.getYear(), clickedItem.getImgUrl(), clickedItem.getLengthInMinutes(), clickedItem.getRating()));
+        try {
+            new WatchlistRepository().addToWatchlist(new WatchlistEntity
+                    (String.valueOf(clickedItem.getId()), clickedItem.getTitle(), clickedItem.getDescription(),
+                            clickedItem.getGenres(), clickedItem.getYear(), clickedItem.getImgUrl(),
+                            clickedItem.getLengthInMinutes(), clickedItem.getRating()));
+        }catch (DatabaseException e){
+            //TODO ui exception notif
+            System.out.println(e.getMessage());
+        }
     };
 
 }
