@@ -31,7 +31,7 @@ public class WatchlistRepository {
                 throw new DatabaseException("Failed to create DB entries!", e);
             }
         } else {
-           throw new DatabaseException("Movie with apiId " + movie.getApiId() + " already exists in the watchlist.");
+           throw new DatabaseException("Movie already exists in the watchlist.");
         }
     }
 
@@ -52,7 +52,7 @@ public class WatchlistRepository {
                 throw new DatabaseException("Failed to delete DB entries!", e);
             }
         } else {
-            throw new DatabaseException("Movie with id " + movie.getId() + " does not exist in the watchlist.");
+            throw new DatabaseException("Movie does not exist in the watchlist.");
         }
     }
 
