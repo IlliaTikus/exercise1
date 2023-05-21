@@ -7,7 +7,7 @@ public class DatabaseException extends RuntimeException{
     }
 
     public DatabaseException(String message, Throwable cause){
-        super(message, cause);
+        super(String.format("%s\n%s", message, cause.getMessage()), cause);
     }
 
 }

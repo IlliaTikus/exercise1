@@ -4,6 +4,7 @@ import at.ac.fhcampuswien.fhmdb.database.WatchlistEntity;
 import at.ac.fhcampuswien.fhmdb.database.WatchlistRepository;
 import at.ac.fhcampuswien.fhmdb.exceptions.DatabaseException;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
+import at.ac.fhcampuswien.fhmdb.ui.Alerts;
 import at.ac.fhcampuswien.fhmdb.ui.MovieCellWatchlist;
 import com.jfoenix.controls.JFXListView;
 import javafx.collections.FXCollections;
@@ -13,6 +14,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -69,8 +71,7 @@ public class WatchlistController implements Initializable {
                             clickedItem.getLengthInMinutes(), clickedItem.getRating()));
             observableMovies.remove(clickedItem);
         }catch (DatabaseException e){
-            //TODO ui exception notif
-            System.out.println(e.getMessage());
+            Alerts.showAlert(AlertType.ERROR, e.getMessage());
         }
     };
 
@@ -84,8 +85,7 @@ public class WatchlistController implements Initializable {
                 allMovies.add(movie);
             }
         } catch (DatabaseException e) {
-            //TODO ui exception notif
-            throw new RuntimeException(e);
+            Alerts.showAlert(AlertType.ERROR, e.getMessage());
         }
         return allMovies;
     }

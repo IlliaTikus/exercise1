@@ -7,7 +7,7 @@ public class MovieApiException extends RuntimeException{
     }
 
     public MovieApiException(String message, Throwable cause){
-        super(message, cause);
+        super(String.format("%s\n%s", message, cause.getMessage()), cause);
     }
 
 }
