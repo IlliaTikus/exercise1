@@ -1,5 +1,6 @@
 package at.ac.fhcampuswien.fhmdb.api;
 
+import at.ac.fhcampuswien.fhmdb.exceptions.MovieApiException;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
 import com.google.gson.Gson;
 import okhttp3.OkHttpClient;
@@ -14,7 +15,7 @@ import java.util.List;
 public class MovieAPI {
     private static final OkHttpClient client = new OkHttpClient();
 
-    public static String run(String url) throws IOException {
+    private static String run(String url) throws IOException {
         Request request = new Request.Builder()
                 .url(url)
                 .addHeader("User-Agent", "http.agent")
@@ -25,8 +26,13 @@ public class MovieAPI {
         }
     }
 
-    public static List<Movie> initializeMovies() throws IOException {
-        String response = run("https://prog2.fh-campuswien.ac.at/movies");
+    public static List<Movie> initializeMovies() throws MovieApiException {
+        String response = "";
+        try {
+            response = run("https://prog2.fh-campuswien.ac.at/movies");
+        }catch (IOException e){
+            throw new MovieApiException("Request to API failed!", e);
+        }
 
         Gson gson = new Gson();
         Movie[] moviesArray = gson.fromJson(response, Movie[].class);
@@ -34,7 +40,8 @@ public class MovieAPI {
         return new ArrayList<>(Arrays.asList(moviesArray));
     }
 
-    public static List<Movie> getMovieList(String query, String genre, String releaseYear, String rating) throws IOException {
+    public static List<Movie> getMovieList(String query, String genre, String releaseYear, String rating)
+            throws MovieApiException {
         StringBuilder url = new StringBuilder("https://prog2.fh-campuswien.ac.at/movies");
         boolean params = false;
         if(query!=null){
@@ -53,7 +60,12 @@ public class MovieAPI {
             url.append(params ? "&" : "?").append("ratingFrom=").append(rating);
             if(!params) params = true;
         }
-        String response = run(url.toString());
+        String response = "";
+        try {
+            response = run(url.toString());
+        }catch (IOException e){
+            throw new MovieApiException("Request to API failed!", e);
+        }
         Gson gson = new Gson();
         Movie[] moviesArray = gson.fromJson(response, Movie[].class);
 

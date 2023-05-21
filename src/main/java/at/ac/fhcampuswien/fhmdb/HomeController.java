@@ -3,6 +3,7 @@ package at.ac.fhcampuswien.fhmdb;
 import at.ac.fhcampuswien.fhmdb.api.MovieAPI;
 import at.ac.fhcampuswien.fhmdb.database.WatchlistEntity;
 import at.ac.fhcampuswien.fhmdb.database.WatchlistRepository;
+import at.ac.fhcampuswien.fhmdb.exceptions.MovieApiException;
 import at.ac.fhcampuswien.fhmdb.models.Genre;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
 import at.ac.fhcampuswien.fhmdb.ui.MovieCell;
@@ -66,7 +67,7 @@ public class HomeController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
             allMovies = MovieAPI.initializeMovies();
-        } catch (IOException e) {
+        } catch (MovieApiException e) {
             throw new RuntimeException(e);
         }
         resetBtn.setCursor(Cursor.HAND);
@@ -124,7 +125,7 @@ public class HomeController implements Initializable {
             List<Movie> filtered = null;
             try {
                 filtered = MovieAPI.getMovieList(query, genre, releaseYear, rating);
-            } catch (IOException e) {
+            } catch (MovieApiException e) {
                 System.out.println("Error occured when trying to fetch movie list!");
                 System.out.println(e.getMessage());
                 e.printStackTrace();

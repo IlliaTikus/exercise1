@@ -2,6 +2,7 @@ package at.ac.fhcampuswien.fhmdb;
 
 import at.ac.fhcampuswien.fhmdb.database.WatchlistEntity;
 import at.ac.fhcampuswien.fhmdb.database.WatchlistRepository;
+import at.ac.fhcampuswien.fhmdb.exceptions.DatabaseException;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
 import at.ac.fhcampuswien.fhmdb.ui.MovieCellWatchlist;
 import com.jfoenix.controls.JFXListView;
@@ -76,7 +77,7 @@ public class WatchlistController implements Initializable {
                         watchlist.get(i).getApiId(), watchlist.get(i).getImgUrl(), watchlist.get(i).getLengthInMinutes());
                 allMovies.add(movie);
             }
-        } catch (SQLException e) {
+        } catch (DatabaseException e) {
             throw new RuntimeException(e);
         }
         return allMovies;
