@@ -51,7 +51,7 @@ public class Database {
         this.dao = DaoManager.createDao(connectionSource, WatchlistEntity.class);
     }
 
-    private ConnectionSource getConnectionSource() {
+    public ConnectionSource getConnectionSource() {
         return this.connectionSource;
     }
 
