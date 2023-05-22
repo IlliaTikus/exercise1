@@ -1,5 +1,6 @@
 package at.ac.fhcampuswien.fhmdb.models;
 
+import at.ac.fhcampuswien.fhmdb.exceptions.MovieApiException;
 import at.ac.fhcampuswien.fhmdb.api.MovieAPI;
 import org.junit.jupiter.api.Test;
 
@@ -14,11 +15,11 @@ import static org.junit.jupiter.api.Assertions.*;
 class MovieTest {
 
     @Test
-    public void initialized_movie_list_is_not_null(){
+    public void initialized_movie_list_is_not_null() {
         List<Movie> movieList = null;
         try {
             movieList = MovieAPI.initializeMovies();
-        } catch (IOException e) {
+        } catch (MovieApiException e) {
             throw new RuntimeException(e);
         }
         assertNotNull(movieList);
@@ -29,7 +30,7 @@ class MovieTest {
         List<Movie> movieList = null;
         try {
             movieList = MovieAPI.initializeMovies();
-        } catch (IOException e) {
+        } catch (MovieApiException e) {
             throw new RuntimeException(e);
         }
         assertFalse(movieList.isEmpty());
@@ -74,7 +75,7 @@ class MovieTest {
         List<Movie> movieList = null;
         try {
             movieList = MovieAPI.initializeMovies();
-        } catch (IOException e) {
+        } catch (MovieApiException e) {
             throw new RuntimeException(e);
         }
 
@@ -95,7 +96,7 @@ class MovieTest {
         List<Movie> movieList = null;
         try {
             movieList = MovieAPI.initializeMovies();
-        } catch (IOException e) {
+        } catch (MovieApiException e) {
             throw new RuntimeException(e);
         }
 
