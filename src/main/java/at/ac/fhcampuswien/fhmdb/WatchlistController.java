@@ -65,7 +65,7 @@ public class WatchlistController implements Initializable {
 
     private final ClickEventHandler onRemoveFromWatchlistClicked = (clickedItem) -> {
         try {
-            new WatchlistRepository().removeFromWatchlist(new WatchlistEntity
+            WatchlistRepository.getInstance().removeFromWatchlist(new WatchlistEntity
                     (clickedItem.getId(), clickedItem.getTitle(), clickedItem.getDescription(),
                             clickedItem.getGenres(), clickedItem.getYear(), clickedItem.getImgUrl(),
                             clickedItem.getLengthInMinutes(), clickedItem.getRating()));
@@ -77,7 +77,7 @@ public class WatchlistController implements Initializable {
 
     public List<Movie> initializeMovies() {
         try {
-            List<WatchlistEntity> watchlist = new WatchlistRepository().getAll();
+            List<WatchlistEntity> watchlist =  WatchlistRepository.getInstance().getAll();
             for (int i = 0; i < watchlist.size(); i++) {
                 Movie movie = new Movie(watchlist.get(i).getTitle(), watchlist.get(i).getDescription(),
                         watchlist.get(i).getGenres(), watchlist.get(i).getReleaseYear(), watchlist.get(i).getRating(),

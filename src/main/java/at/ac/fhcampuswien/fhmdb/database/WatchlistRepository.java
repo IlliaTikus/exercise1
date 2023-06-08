@@ -10,7 +10,9 @@ import java.util.List;
 public class WatchlistRepository {
     private Dao<WatchlistEntity, Long> dao;
 
-    public WatchlistRepository() throws DatabaseException {
+    private static WatchlistRepository instance;
+
+    private WatchlistRepository() throws DatabaseException {
         this.dao = Database.getInstance().getWatchlistDao();
     }
 
@@ -62,5 +64,12 @@ public class WatchlistRepository {
         } catch (SQLException e) {
             throw new DatabaseException("Failed to query watchlist members!", e);
         }
+    }
+
+    public static WatchlistRepository getInstance() throws  DatabaseException{
+        if (instance == null) {
+            instance = new WatchlistRepository();
+        }
+        return instance;
     }
 }
