@@ -3,6 +3,7 @@ package at.ac.fhcampuswien.fhmdb;
 import at.ac.fhcampuswien.fhmdb.database.WatchlistEntity;
 import at.ac.fhcampuswien.fhmdb.database.WatchlistRepository;
 import at.ac.fhcampuswien.fhmdb.exceptions.DatabaseException;
+import at.ac.fhcampuswien.fhmdb.factory.MyFactory;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
 import at.ac.fhcampuswien.fhmdb.ui.Alerts;
 import at.ac.fhcampuswien.fhmdb.ui.MovieCellWatchlist;
@@ -47,7 +48,9 @@ public class WatchlistController implements Initializable {
 
     public void onWatchlist(ActionEvent actionEvent) throws IOException {
         Stage stage = (Stage) movieListView.getScene().getWindow();
+        MyFactory myFactory = MyFactory.getInstance();
         FXMLLoader fxmlLoader = new FXMLLoader(FhmdbApplication.class.getResource("watchlist.fxml"));
+        fxmlLoader.setControllerFactory(myFactory);
         Scene scene = new Scene(fxmlLoader.load(), 890, 620);
         scene.getStylesheets().add(Objects.requireNonNull(FhmdbApplication.class.getResource("styles.css")).toExternalForm());
         stage.setTitle("Watchlist");
@@ -56,7 +59,9 @@ public class WatchlistController implements Initializable {
 
     public void onHome(ActionEvent actionEvent) throws IOException {
         Stage stage = (Stage) movieListView.getScene().getWindow();
+        MyFactory myFactory = MyFactory.getInstance();
         FXMLLoader fxmlLoader = new FXMLLoader(FhmdbApplication.class.getResource("home-view.fxml"));
+        fxmlLoader.setControllerFactory(myFactory);
         Scene scene = new Scene(fxmlLoader.load(), 890, 620);
         scene.getStylesheets().add(Objects.requireNonNull(FhmdbApplication.class.getResource("styles.css")).toExternalForm());
         stage.setTitle("Watchlist");
