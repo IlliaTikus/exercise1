@@ -58,8 +58,10 @@ public class HomeController implements Initializable {
     public List<Movie> allMovies;
 
     public final ObservableList<Movie> observableMovies = FXCollections.observableArrayList();   // automatically updates corresponding UI elements when underlying data changes
+    private SortState state;
 
     public HomeController() {
+        state = new SortStateStart();
     }
 
     @Override
@@ -103,15 +105,8 @@ public class HomeController implements Initializable {
 
         // Sort button example:
         sortBtn.setOnAction(actionEvent -> {
-            if(sortBtn.getText().equals("Sort (asc)")) {
-                sortBtn.setText("Sort (desc)");
-                Collections.sort(observableMovies);
-
-            } else {
-                sortBtn.setText("Sort (asc)");
-                Collections.sort(observableMovies);
-                Collections.reverse(observableMovies);
-            }
+            state.next(this);
+            state.sortMovies(observableMovies);
         });
 
         searchBtn.setOnAction(actionEvent -> {
@@ -132,6 +127,7 @@ public class HomeController implements Initializable {
             }
             observableMovies.clear();
             observableMovies.addAll(filtered);
+            state.sortMovies(observableMovies);
             movieListView.refresh();
         });
 
@@ -226,5 +222,9 @@ public class HomeController implements Initializable {
                 (String.valueOf(clickedItem.getId()),clickedItem.getTitle(),clickedItem.getDescription(),
                         clickedItem.getGenres(),clickedItem.getYear(), clickedItem.getImgUrl(), clickedItem.getLengthInMinutes(), clickedItem.getRating()));
     };
+
+    public void setState(SortState state){
+        this.state = state;
+    }
 
 }
