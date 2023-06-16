@@ -224,7 +224,7 @@ public class HomeController implements Initializable {
 
     private final ClickEventHandler onAddToWatchlistClicked = (clickedItem) -> {
         try {
-            new WatchlistRepository().addToWatchlist(new WatchlistEntity
+            WatchlistRepository.getInstance().addToWatchlist(new WatchlistEntity
                     (String.valueOf(clickedItem.getId()), clickedItem.getTitle(), clickedItem.getDescription(),
                             clickedItem.getGenres(), clickedItem.getYear(), clickedItem.getImgUrl(),
                             clickedItem.getLengthInMinutes(), clickedItem.getRating()));
