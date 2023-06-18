@@ -26,46 +26,35 @@ public class MovieAPI {
         }
     }
 
-    public static List<Movie> initializeMovies() throws MovieApiException {
-        String response = "";
-        try {
-            response = run("https://prog2.fh-campuswien.ac.at/movies");
-        }catch (IOException e){
-            throw new MovieApiException("Request to API failed!", e);
-        }
+    public static List<Movie> getMovieList() throws MovieApiException {
+        String baseUrl = "https://prog2.fh-campuswien.ac.at/movies";
+        String url = new MovieAPIRequestBuilder(baseUrl)
+                .build();
 
-        Gson gson = new Gson();
-        Movie[] moviesArray = gson.fromJson(response, Movie[].class);
-
-        return new ArrayList<>(Arrays.asList(moviesArray));
+        return parseUrl(url);
     }
 
     public static List<Movie> getMovieList(String query, String genre, String releaseYear, String rating)
             throws MovieApiException {
-        StringBuilder url = new StringBuilder("https://prog2.fh-campuswien.ac.at/movies");
-        boolean params = false;
-        if(query!=null){
-            url.append("?query=").append(query);
-            params = true;
-        }
-        if(genre!=null){
-            url.append(params ? "&" : "?").append("genre=").append(genre);
-            if(!params) params = true;
-        }
-        if(releaseYear!=null){
-            url.append(params ? "&" : "?").append("releaseYear=").append(releaseYear);
-            if(!params) params = true;
-        }
-        if(rating!=null){
-            url.append(params ? "&" : "?").append("ratingFrom=").append(rating);
-            if(!params) params = true;
-        }
+        String baseUrl = "https://prog2.fh-campuswien.ac.at/movies";
+        String url = new MovieAPIRequestBuilder(baseUrl)
+                .query(query)
+                .genre(genre)
+                .releaseYear(releaseYear)
+                .ratingFrom(rating)
+                .build();
+
+        return parseUrl(url);
+    }
+
+    public static List<Movie> parseUrl(String url) {
         String response = "";
         try {
-            response = run(url.toString());
-        }catch (IOException e){
+            response = run(url);
+        } catch (IOException e) {
             throw new MovieApiException("Request to API failed!", e);
         }
+
         Gson gson = new Gson();
         Movie[] moviesArray = gson.fromJson(response, Movie[].class);
 
@@ -73,7 +62,6 @@ public class MovieAPI {
     }
 
     public static void main(String[] args) throws IOException {
-        initializeMovies();
+        getMovieList();
     }
-
 }

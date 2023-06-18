@@ -21,7 +21,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
@@ -73,7 +72,7 @@ public class HomeController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
-            allMovies = MovieAPI.initializeMovies();
+            allMovies = MovieAPI.getMovieList();
         } catch (MovieApiException e) {
             allMovies = new ArrayList<>();
             Alerts.showAlert(AlertType.ERROR, "An error occured while initializing movies:\n"+e.getMessage());
