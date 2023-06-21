@@ -22,6 +22,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
@@ -73,6 +74,11 @@ public class HomeController implements Initializable, Observer {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        //adding Observer
+        WatchlistRepository watchlistRepository = WatchlistRepository.getInstance();
+        watchlistRepository.addObserver(this);
+
         try {
             allMovies = MovieAPI.getMovieList();
         } catch (MovieApiException e) {
@@ -146,6 +152,7 @@ public class HomeController implements Initializable, Observer {
             searchField.clear();
         }));
 
+
     }
 
     @Override
@@ -156,10 +163,10 @@ public class HomeController implements Initializable, Observer {
     public void displayAlert(String message,AlertType type) {
         Alert alert = new Alert(type);
         alert.setContentText(message);
-        if (type == AlertType.INFORMATION){
-            alert.show();
-        } else {
+        if (type == AlertType.WARNING){
             alert.showAndWait();
+        } else {
+            alert.show();
         }
     }
 
@@ -243,8 +250,7 @@ public class HomeController implements Initializable, Observer {
 
     private final ClickEventHandler onAddToWatchlistClicked = (clickedItem) -> {
         try {
-            WatchlistRepository watchlistRepository = new WatchlistRepository();
-            watchlistRepository.addObserver(this);
+            WatchlistRepository watchlistRepository = WatchlistRepository.getInstance();
             watchlistRepository.addToWatchlist(new WatchlistEntity
                     (String.valueOf(clickedItem.getId()), clickedItem.getTitle(), clickedItem.getDescription(),
                             clickedItem.getGenres(), clickedItem.getYear(), clickedItem.getImgUrl(),
