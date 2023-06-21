@@ -4,8 +4,6 @@ import at.ac.fhcampuswien.fhmdb.exceptions.MovieApiException;
 import at.ac.fhcampuswien.fhmdb.api.MovieAPI;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -18,7 +16,7 @@ class MovieTest {
     public void initialized_movie_list_is_not_null() {
         List<Movie> movieList = null;
         try {
-            movieList = MovieAPI.initializeMovies();
+            movieList = MovieAPI.getMovieList();
         } catch (MovieApiException e) {
             throw new RuntimeException(e);
         }
@@ -29,7 +27,7 @@ class MovieTest {
     public void initialized_movie_list_is_empty_returns_false(){
         List<Movie> movieList = null;
         try {
-            movieList = MovieAPI.initializeMovies();
+            movieList = MovieAPI.getMovieList();
         } catch (MovieApiException e) {
             throw new RuntimeException(e);
         }
@@ -74,7 +72,7 @@ class MovieTest {
 //        ARRANGE
         List<Movie> movieList = null;
         try {
-            movieList = MovieAPI.initializeMovies();
+            movieList = MovieAPI.getMovieList();
         } catch (MovieApiException e) {
             throw new RuntimeException(e);
         }
@@ -95,7 +93,7 @@ class MovieTest {
 //        ARRANGE
         List<Movie> movieList = null;
         try {
-            movieList = MovieAPI.initializeMovies();
+            movieList = MovieAPI.getMovieList();
         } catch (MovieApiException e) {
             throw new RuntimeException(e);
         }

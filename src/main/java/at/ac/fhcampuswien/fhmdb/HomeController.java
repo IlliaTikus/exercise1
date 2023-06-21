@@ -5,6 +5,7 @@ import at.ac.fhcampuswien.fhmdb.database.WatchlistEntity;
 import at.ac.fhcampuswien.fhmdb.database.WatchlistRepository;
 import at.ac.fhcampuswien.fhmdb.exceptions.DatabaseException;
 import at.ac.fhcampuswien.fhmdb.exceptions.MovieApiException;
+import at.ac.fhcampuswien.fhmdb.factory.MyFactory;
 import at.ac.fhcampuswien.fhmdb.models.Genre;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
 import at.ac.fhcampuswien.fhmdb.observer.Observer;
@@ -21,7 +22,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
@@ -65,14 +65,16 @@ public class HomeController implements Initializable, Observer {
 
 
     public final ObservableList<Movie> observableMovies = FXCollections.observableArrayList();   // automatically updates corresponding UI elements when underlying data changes
+    private SortState state;
 
     public HomeController() {
+        state = new SortStateStart();
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
-            allMovies = MovieAPI.initializeMovies();
+            allMovies = MovieAPI.getMovieList();
         } catch (MovieApiException e) {
             allMovies = new ArrayList<>();
             Alerts.showAlert(AlertType.ERROR, "An error occured while initializing movies:\n"+e.getMessage());
@@ -111,15 +113,8 @@ public class HomeController implements Initializable, Observer {
 
         // Sort button example:
         sortBtn.setOnAction(actionEvent -> {
-            if(sortBtn.getText().equals("Sort (asc)")) {
-                sortBtn.setText("Sort (desc)");
-                Collections.sort(observableMovies);
-
-            } else {
-                sortBtn.setText("Sort (asc)");
-                Collections.sort(observableMovies);
-                Collections.reverse(observableMovies);
-            }
+            state.next(this);
+            state.sortMovies(observableMovies);
         });
 
         searchBtn.setOnAction(actionEvent -> {
@@ -139,6 +134,7 @@ public class HomeController implements Initializable, Observer {
             }
             observableMovies.clear();
             observableMovies.addAll(filtered);
+            state.sortMovies(observableMovies);
             movieListView.refresh();
         });
 
@@ -227,7 +223,9 @@ public class HomeController implements Initializable, Observer {
 
     public void onWatchlist(ActionEvent actionEvent) throws IOException {
         Stage stage = (Stage) resetBtn.getScene().getWindow();
+        MyFactory myFactory = MyFactory.getInstance();
         FXMLLoader fxmlLoader = new FXMLLoader(FhmdbApplication.class.getResource("watchlist.fxml"));
+        fxmlLoader.setControllerFactory(myFactory);
         Scene scene = new Scene(fxmlLoader.load(), 890, 620);
         scene.getStylesheets().add(Objects.requireNonNull(FhmdbApplication.class.getResource("styles.css")).toExternalForm());
         stage.setTitle("Watchlist");
@@ -255,5 +253,9 @@ public class HomeController implements Initializable, Observer {
             throw new DatabaseException(e.getMessage());
         }
     };
+
+    public void setState(SortState state){
+        this.state = state;
+    }
 
 }

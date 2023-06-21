@@ -15,7 +15,9 @@ public class WatchlistRepository implements Observable {
     private Dao<WatchlistEntity, Long> dao;
     private List<Observer> observers;
 
-    public WatchlistRepository() throws DatabaseException {
+    private static WatchlistRepository instance;
+
+    private WatchlistRepository() throws DatabaseException {
         this.dao = Database.getInstance().getWatchlistDao();
         observers = new ArrayList<>();
     }
@@ -86,5 +88,11 @@ public class WatchlistRepository implements Observable {
         for (Observer observer : observers) {
             observer.update(message,type);
         }
+
+    public static WatchlistRepository getInstance() throws  DatabaseException{
+        if (instance == null) {
+            instance = new WatchlistRepository();
+        }
+        return instance;
     }
 }

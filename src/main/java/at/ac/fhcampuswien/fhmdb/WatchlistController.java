@@ -3,6 +3,7 @@ package at.ac.fhcampuswien.fhmdb;
 import at.ac.fhcampuswien.fhmdb.database.WatchlistEntity;
 import at.ac.fhcampuswien.fhmdb.database.WatchlistRepository;
 import at.ac.fhcampuswien.fhmdb.exceptions.DatabaseException;
+import at.ac.fhcampuswien.fhmdb.factory.MyFactory;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
 import at.ac.fhcampuswien.fhmdb.ui.Alerts;
 import at.ac.fhcampuswien.fhmdb.ui.MovieCellWatchlist;
@@ -47,7 +48,9 @@ public class WatchlistController implements Initializable {
 
     public void onWatchlist(ActionEvent actionEvent) throws IOException {
         Stage stage = (Stage) movieListView.getScene().getWindow();
+        MyFactory myFactory = MyFactory.getInstance();
         FXMLLoader fxmlLoader = new FXMLLoader(FhmdbApplication.class.getResource("watchlist.fxml"));
+        fxmlLoader.setControllerFactory(myFactory);
         Scene scene = new Scene(fxmlLoader.load(), 890, 620);
         scene.getStylesheets().add(Objects.requireNonNull(FhmdbApplication.class.getResource("styles.css")).toExternalForm());
         stage.setTitle("Watchlist");
@@ -56,7 +59,9 @@ public class WatchlistController implements Initializable {
 
     public void onHome(ActionEvent actionEvent) throws IOException {
         Stage stage = (Stage) movieListView.getScene().getWindow();
+        MyFactory myFactory = MyFactory.getInstance();
         FXMLLoader fxmlLoader = new FXMLLoader(FhmdbApplication.class.getResource("home-view.fxml"));
+        fxmlLoader.setControllerFactory(myFactory);
         Scene scene = new Scene(fxmlLoader.load(), 890, 620);
         scene.getStylesheets().add(Objects.requireNonNull(FhmdbApplication.class.getResource("styles.css")).toExternalForm());
         stage.setTitle("Watchlist");
@@ -65,7 +70,7 @@ public class WatchlistController implements Initializable {
 
     private final ClickEventHandler onRemoveFromWatchlistClicked = (clickedItem) -> {
         try {
-            new WatchlistRepository().removeFromWatchlist(new WatchlistEntity
+            WatchlistRepository.getInstance().removeFromWatchlist(new WatchlistEntity
                     (clickedItem.getId(), clickedItem.getTitle(), clickedItem.getDescription(),
                             clickedItem.getGenres(), clickedItem.getYear(), clickedItem.getImgUrl(),
                             clickedItem.getLengthInMinutes(), clickedItem.getRating()));
@@ -77,7 +82,7 @@ public class WatchlistController implements Initializable {
 
     public List<Movie> initializeMovies() {
         try {
-            List<WatchlistEntity> watchlist = new WatchlistRepository().getAll();
+            List<WatchlistEntity> watchlist =  WatchlistRepository.getInstance().getAll();
             for (int i = 0; i < watchlist.size(); i++) {
                 Movie movie = new Movie(watchlist.get(i).getTitle(), watchlist.get(i).getDescription(),
                         watchlist.get(i).getGenres(), watchlist.get(i).getReleaseYear(), watchlist.get(i).getRating(),
