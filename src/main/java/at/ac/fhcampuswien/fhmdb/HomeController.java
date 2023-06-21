@@ -8,6 +8,7 @@ import at.ac.fhcampuswien.fhmdb.exceptions.MovieApiException;
 import at.ac.fhcampuswien.fhmdb.factory.MyFactory;
 import at.ac.fhcampuswien.fhmdb.models.Genre;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
+import at.ac.fhcampuswien.fhmdb.observer.Observer;
 import at.ac.fhcampuswien.fhmdb.ui.Alerts;
 import at.ac.fhcampuswien.fhmdb.ui.MovieCell;
 import com.jfoenix.controls.JFXButton;
@@ -32,7 +33,7 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class HomeController implements Initializable {
+public class HomeController implements Initializable, Observer {
     @FXML
     public JFXButton searchBtn;
 
@@ -61,6 +62,7 @@ public class HomeController implements Initializable {
     public MenuItem watchlist;
 
     public List<Movie> allMovies;
+
 
     public final ObservableList<Movie> observableMovies = FXCollections.observableArrayList();   // automatically updates corresponding UI elements when underlying data changes
     private SortState state;
@@ -146,6 +148,21 @@ public class HomeController implements Initializable {
 
     }
 
+    @Override
+    public void update(String message, AlertType type) {
+        displayAlert(message, type);
+    }
+
+    public void displayAlert(String message,AlertType type) {
+        Alert alert = new Alert(type);
+        alert.setContentText(message);
+        if (type == AlertType.INFORMATION){
+            alert.show();
+        } else {
+            alert.showAndWait();
+        }
+    }
+
     public void filterByGenre(List<Movie> allMovies, Genre genre) {
         for(Movie movie : allMovies) {
             if(movie.getGenres().contains(genre)) {
@@ -226,12 +243,13 @@ public class HomeController implements Initializable {
 
     private final ClickEventHandler onAddToWatchlistClicked = (clickedItem) -> {
         try {
-            WatchlistRepository.getInstance().addToWatchlist(new WatchlistEntity
+            WatchlistRepository watchlistRepository = new WatchlistRepository();
+            watchlistRepository.addObserver(this);
+            watchlistRepository.addToWatchlist(new WatchlistEntity
                     (String.valueOf(clickedItem.getId()), clickedItem.getTitle(), clickedItem.getDescription(),
                             clickedItem.getGenres(), clickedItem.getYear(), clickedItem.getImgUrl(),
                             clickedItem.getLengthInMinutes(), clickedItem.getRating()));
         }catch (DatabaseException e){
-            Alerts.showAlert(AlertType.WARNING, e.getMessage());
             throw new DatabaseException(e.getMessage());
         }
     };
