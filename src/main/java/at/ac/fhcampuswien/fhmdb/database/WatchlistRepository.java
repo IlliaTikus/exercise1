@@ -28,7 +28,7 @@ public class WatchlistRepository implements Observable {
         try {
             queryBuilder.where().eq("apiId", movie.getApiId());
             existingMovies = dao.query(queryBuilder.prepare());
-        }catch (SQLException e){
+        } catch (SQLException e) {
             throw new DatabaseException("Failed to query from DB on: addToWatchlist", e);
         }
 
@@ -36,29 +36,29 @@ public class WatchlistRepository implements Observable {
             try {
                 dao.create(movie);
                 notifyObservers("Movie successfully added.", Alert.AlertType.INFORMATION);
-            }catch (SQLException e){
+            } catch (SQLException e) {
                 throw new DatabaseException("Failed to create DB entries!", e);
             }
         } else {
             notifyObservers("Movie already exists!", Alert.AlertType.WARNING);
-           throw new DatabaseException("Movie already exists in the watchlist.");
+            throw new DatabaseException("Movie already exists in the watchlist.");
         }
     }
 
-    public void removeFromWatchlist(WatchlistEntity movie) throws DatabaseException{
+    public void removeFromWatchlist(WatchlistEntity movie) throws DatabaseException {
         QueryBuilder<WatchlistEntity, Long> queryBuilder = dao.queryBuilder();
         List<WatchlistEntity> existingMovies;
         try {
             queryBuilder.where().eq("apiId", movie.getApiId());
             existingMovies = dao.query(queryBuilder.prepare());
-        }catch(SQLException e){
+        } catch (SQLException e) {
             throw new DatabaseException("Failed to query from DB on: removeFromWatchlist", e);
         }
 
         if (!existingMovies.isEmpty()) {
             try {
                 dao.delete(existingMovies);
-            }catch (SQLException e){
+            } catch (SQLException e) {
                 throw new DatabaseException("Failed to delete DB entries!", e);
             }
         } else {
@@ -73,6 +73,7 @@ public class WatchlistRepository implements Observable {
             throw new DatabaseException("Failed to query watchlist members!", e);
         }
     }
+
     @Override
     public void addObserver(Observer observer) {
         observers.add(observer);
@@ -86,10 +87,10 @@ public class WatchlistRepository implements Observable {
     @Override
     public void notifyObservers(String message, Alert.AlertType type) {
         for (Observer observer : observers) {
-            observer.update(message,type);
+            observer.update(message, type);
         }
-
-    public static WatchlistRepository getInstance() throws  DatabaseException{
+    }
+    public static WatchlistRepository getInstance(){
         if (instance == null) {
             instance = new WatchlistRepository();
         }
